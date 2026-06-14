@@ -1,26 +1,36 @@
 pipeline {
-
     agent any
+
+    environment {
+        DOCKER_IMAGE = "vijayalaxmi087/employee-app"
+    }
 
     stages {
 
         stage('Checkout') {
             steps {
-                 checkout scm
-              }
+                checkout scm
+            }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t employee-app:v1 .'
+                sh 'docker build -t employee-app .'
             }
         }
 
-        stage('Show Docker Images') {
+        stage('Push Docker Image') {
             steps {
-                sh 'docker images'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
+                                                  usernameVariable: 'USER',
+                                                  passwordVariable: 'PASS')]) {
+                    sh '''
+                        echo $PASS | docker login -u $USER --password-stdin
+                        docker tag employee-app $USER/employee-app:latest
+                        docker push $USER/employee-app:latest
+                    '''
+                }
             }
         }
-
     }
 }
