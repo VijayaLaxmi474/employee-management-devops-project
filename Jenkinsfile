@@ -6,8 +6,8 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/VijayaLaxmi474/employee-management-devops-project.git'
-            }
+                 checkout scm
+              }
         }
 
         stage('Build Docker Image') {
