@@ -4,9 +4,9 @@ pipeline {
 
     stages {
 
-        stage('Git Checkout') {
+        stage('Checkout') {
             steps {
-                git https://github.com/VijayaLaxmi474/employee-management-devops-project
+                git url: 'https://github.com/VijayaLaxmi474/employee-management-devops-project.git'
             }
         }
 
@@ -16,12 +16,11 @@ pipeline {
             }
         }
 
-        stage('Verify Docker Image') {
+        stage('Show Docker Images') {
             steps {
                 sh 'docker images'
             }
         }
 
     }
-
 }
